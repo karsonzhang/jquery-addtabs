@@ -135,14 +135,14 @@ $.fn.addtabs = function (options) {
 
     _drop = function () {
         element = obj.find('.nav-addtabs');
-        element.css("padding-right", "60px");
         //创建下拉标签
-        var dropdown = $('<li class="dropdown pull-right tabdrop"><a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">' +
+        var dropdown = $('<li class="dropdown pull-right hide tabdrop"><a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">' +
                 '<i class="glyphicon glyphicon-align-justify"></i>' +
                 ' <b class="caret"></b></a><ul class="dropdown-menu"></ul></li>');
         //检测是否已增加
         if (!$('.tabdrop').html()) {
             dropdown.prependTo(element);
+            element.css("padding-right", "60px");
         } else {
             dropdown = element.find('.tabdrop');
         }
@@ -162,7 +162,6 @@ $.fn.addtabs = function (options) {
                         collection++;
                     }
                 });
-
         //如果有超出的，显示下拉标签
         if (collection > 0) {
             dropdown.removeClass('hide');
