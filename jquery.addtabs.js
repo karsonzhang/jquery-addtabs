@@ -72,7 +72,7 @@ $.fn.addtabs = function (options) {
 
     $(window).resize(function () {
         //obj.find('iframe').attr('height', options.iframeHeight);
-        $("#nav").width($("#header").width() - $("#logo").width() - $("#rightbar").width() - 15);
+        $("#nav").width($("#header").width() - $("#rightbar").width() - 15);
         _drop();
     });
 
@@ -135,8 +135,9 @@ $.fn.addtabs = function (options) {
 
     _drop = function () {
         element = obj.find('.nav-addtabs');
+        element.css("padding-right", "60px");
         //创建下拉标签
-        var dropdown = $('<li class="dropdown pull-right hide tabdrop"><a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">' +
+        var dropdown = $('<li class="dropdown pull-right tabdrop"><a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">' +
                 '<i class="glyphicon glyphicon-align-justify"></i>' +
                 ' <b class="caret"></b></a><ul class="dropdown-menu"></ul></li>');
         //检测是否已增加
@@ -173,5 +174,6 @@ $.fn.addtabs = function (options) {
         } else {
             dropdown.addClass('hide');
         }
+        element.css("padding-right", "0");
     };
 };
