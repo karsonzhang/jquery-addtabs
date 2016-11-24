@@ -6,7 +6,7 @@
  * close bool 是否可以关闭
  * monitor 监视的区域
  * }
- * 
+ *
  * @returns
  */
 $.fn.addtabs = function (options) {
@@ -71,8 +71,7 @@ $.fn.addtabs = function (options) {
     });
 
     $(window).resize(function () {
-        //obj.find('iframe').attr('height', options.iframeHeight);
-        $("#nav").width($("#header").width() - $("#rightbar").width() - 15);
+        $("#nav").width($("#header > .navbar").width() - $(".sidebar-toggle").outerWidth() - $(".navbar-custom-menu").outerWidth() - 20);
         _drop();
     });
 
@@ -96,10 +95,7 @@ $.fn.addtabs = function (options) {
                 content.append(opts.content);
             } else if (options.iframeUse && !opts.ajax) {//没有内容，使用IFRAME打开链接
                 var height = options.iframeHeight;
-                //计算iframe的高度
-                height = $(window).height() - $("#header").height() - 5;
-                content.append('<iframe src="' + url + '" width="100%" height="' + height +
-                        '" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling-x="no" scrolling-y="auto" allowtransparency="yes"></iframe></div>');
+                content.append('<iframe src="' + url + '" width="100%" height="' + height + '%" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling-x="no" scrolling-y="auto" allowtransparency="yes"></iframe></div>');
             } else {
                 $.get(url, function (data) {
                     content.append(data);
@@ -123,8 +119,11 @@ $.fn.addtabs = function (options) {
     _close = function (id) {
         //如果关闭的是当前激活的TAB，激活他的前一个TAB
         if (obj.find("li.active").attr('id') == "tab_" + id) {
-            $("#tab_" + id).prev().addClass('active');
-            $("#" + id).prev().addClass('active');
+            if ($("#tab_" + id).prev().not(".tabdrop").size() > 0) {
+                $("#tab_" + id).prev().not(".tabdrop").find("a").trigger("click");
+            } else if ($("#tab_" + id).next().size() > 0) {
+                $("#tab_" + id).next().trigger("click");
+            }
         }
         //关闭TAB
         $("#tab_" + id).remove();
