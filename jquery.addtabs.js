@@ -141,7 +141,6 @@ $.fn.addtabs = function (options) {
         //检测是否已增加
         if (!$('.tabdrop').html()) {
             dropdown.prependTo(element);
-            element.css("padding-right", "60px");
         } else {
             dropdown = element.find('.tabdrop');
         }
@@ -151,16 +150,22 @@ $.fn.addtabs = function (options) {
         }
         var collection = 0;
 
+        var maxwidth = element.width() - 60;
+
+        var liwidth = 0;
         //检查超过一行的标签页
-        element.append(dropdown.find('li'))
-                .find('>li')
-                .not('.tabdrop')
-                .each(function () {
-                    if (this.offsetTop > 0) {
-                        dropdown.find('ul').append($(this));
-                        collection++;
-                    }
-                });
+        var litabs = element.append(dropdown.find('li')).find('>li').not('.tabdrop');
+        var lisize = litabs.size();
+        litabs.each(function (i, j) {
+            liwidth += $(this).width();
+            if (collection == 0 && i == lisize - 1 && liwidth <= element.width()) {
+                return true;
+            }
+            if (liwidth > maxwidth) {
+                dropdown.find('ul').append($(this));
+                collection++;
+            }
+        });
         //如果有超出的，显示下拉标签
         if (collection > 0) {
             dropdown.removeClass('hide');
@@ -172,6 +177,5 @@ $.fn.addtabs = function (options) {
         } else {
             dropdown.addClass('hide');
         }
-        element.css("padding-right", "0");
     };
 };
