@@ -82,7 +82,8 @@ $.fn.addtabs = function (options) {
         id = 'tab_' + opts.id;
         url = opts.url;
         url += (opts.url.indexOf("?") > -1 ? "&addtabs=1" : "?addtabs=1");
-        obj.find('li.active').removeClass('active');
+        navobj.find("[role='presentation']").removeClass('active');
+        tabobj.find("[role='tabpanel']").removeClass('active');
         //如果TAB不存在，创建一个新的TAB
         if ($("#" + id).size() == 0) {
             //创建新TAB的title
