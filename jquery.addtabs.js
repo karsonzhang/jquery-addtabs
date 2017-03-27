@@ -10,26 +10,30 @@
  * @returns
  */
 $.fn.addtabs = function (options) {
-    obj = $(this);
+    var obj = $(this);
     options = $.extend({
         content: '', //直接指定所有页面TABS内容
         close: true, //是否可以关闭
         monitor: 'body', //监视的区域
+        nav: '.nav-addtabs',
+        tab: '.tab-addtabs',
         iframeUse: true, //使用iframe还是ajax
         iframeHeight: $(window).height() - 50, //固定TAB中IFRAME高度,根据需要自己修改
         callback: function () {
             //关闭后回调函数
         }
     }, options || {});
-
+    var navobj = $(options.nav);
+    var tabobj = $(options.tab);
     if (history.pushState) {
         //浏览器前进后退事件
         $(window).on("popstate", function (e) {
             var state = e.originalEvent.state;
-            $("a[addtabs=" + state.id + "]").data("pushstate", true).trigger("click");
+            $("a[addtabs=" + state.id + "]", options.monitor).data("pushstate", true).trigger("click");
         });
     }
     $(options.monitor).on('click', '[addtabs]', function (e) {
+        console.log(this);
         if ($(this).attr('url').indexOf("javascript") !== 0) {
             if ($(this).is("a")) {
                 e.preventDefault();
@@ -58,15 +62,15 @@ $.fn.addtabs = function (options) {
         }
     });
 
-    obj.on('click', '.close-tab', function (e) {
+    navobj.on('click', '.close-tab', function (e) {
         id = $(this).prev("a").attr("aria-controls");
         _close(id);
         return false;
     });
-    obj.on('dblclick', 'li[role=presentation]', function (e) {
+    navobj.on('dblclick', 'li[role=presentation]', function (e) {
         $(this).find(".close-tab").trigger("click");
     });
-    obj.on('click', 'li[role=presentation]', function (e) {
+    navobj.on('click', 'li[role=presentation]', function (e) {
         $("a[addtabs=" + $("a", this).attr("node-id") + "]").trigger("click");
     });
 
@@ -79,9 +83,9 @@ $.fn.addtabs = function (options) {
         id = 'tab_' + opts.id;
         url = opts.url;
         url += (opts.url.indexOf("?") > -1 ? "&addtabs=1" : "?addtabs=1");
-        obj.find('.active').removeClass('active');
+        obj.find('li.active').removeClass('active');
         //如果TAB不存在，创建一个新的TAB
-        if (!$("#" + id)[0]) {
+        if ($("#" + id).size() == 0) {
             //创建新TAB的title
             title = $('<li role="presentation" id="tab_' + id + '"><a href="#' + id + '" node-id="' + opts.id + '" aria-controls="' + id + '" role="tab" data-toggle="tab">' + opts.title + '</a></li>');
             //是否允许关闭
@@ -105,9 +109,9 @@ $.fn.addtabs = function (options) {
             if ($('.tabdrop li').size() > 0) {
                 $('.tabdrop ul').append(title);
             } else {
-                obj.find('.nav-addtabs').append(title);
+                navobj.append(title);
             }
-            obj.find(".tab-addtabs").append(content);
+            tabobj.append(content);
         }
 
         //激活TAB
@@ -133,32 +137,31 @@ $.fn.addtabs = function (options) {
     };
 
     _drop = function () {
-        element = obj.find('.nav-addtabs');
         //创建下拉标签
         var dropdown = $('<li class="dropdown pull-right hide tabdrop"><a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">' +
                 '<i class="glyphicon glyphicon-align-justify"></i>' +
                 ' <b class="caret"></b></a><ul class="dropdown-menu"></ul></li>');
         //检测是否已增加
         if (!$('.tabdrop').html()) {
-            dropdown.prependTo(element);
+            dropdown.prependTo(navobj);
         } else {
-            dropdown = element.find('.tabdrop');
+            dropdown = navobj.find('.tabdrop');
         }
         //检测是否有下拉样式
-        if (element.parent().is('.tabs-below')) {
+        if (navobj.parent().is('.tabs-below')) {
             dropdown.addClass('dropup');
         }
         var collection = 0;
 
-        var maxwidth = element.width() - 60;
+        var maxwidth = navobj.width() - 60;
 
         var liwidth = 0;
         //检查超过一行的标签页
-        var litabs = element.append(dropdown.find('li')).find('>li').not('.tabdrop');
+        var litabs = navobj.append(dropdown.find('li')).find('>li').not('.tabdrop');
         var lisize = litabs.size();
         litabs.each(function (i, j) {
             liwidth += $(this).width();
-            if (collection == 0 && i == lisize - 1 && liwidth <= element.width()) {
+            if (collection == 0 && i == lisize - 1 && liwidth <= navobj.width()) {
                 return true;
             }
             if (liwidth > maxwidth) {
