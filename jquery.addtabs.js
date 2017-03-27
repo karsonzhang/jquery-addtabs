@@ -33,7 +33,6 @@ $.fn.addtabs = function (options) {
         });
     }
     $(options.monitor).on('click', '[addtabs]', function (e) {
-        console.log(this);
         if ($(this).attr('url').indexOf("javascript") !== 0) {
             if ($(this).is("a")) {
                 e.preventDefault();
