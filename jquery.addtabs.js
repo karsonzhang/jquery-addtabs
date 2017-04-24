@@ -99,7 +99,7 @@ $.fn.addtabs = function (options) {
                 content.append(opts.content);
             } else if (options.iframeUse && !opts.ajax) {//没有内容，使用IFRAME打开链接
                 var height = options.iframeHeight;
-                content.append('<iframe src="' + url + '" width="100%" height="' + height + '%" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling-x="no" scrolling-y="auto" allowtransparency="yes"></iframe></div>');
+                content.append('<iframe src="' + url + '" width="100%" height="' + height + '" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling-x="no" scrolling-y="auto" allowtransparency="yes"></iframe></div>');
             } else {
                 $.get(url, function (data) {
                     content.append(data);
