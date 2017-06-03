@@ -48,7 +48,8 @@ $.fn.addtabs = function (options) {
 
             document.title = title;
             if (history.pushState && !$(this).data("pushstate")) {
-                window.history.pushState(state, title, url);
+                var pushurl = url.indexOf("ref=addtabs") == -1 ? (url + (url.indexOf("?") > -1 ? "&" : "?") + "ref=addtabs") : url;
+                window.history.pushState(state, title, pushurl);
             }
             $(this).data("pushstate", null);
             _add({
