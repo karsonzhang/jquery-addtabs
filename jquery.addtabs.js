@@ -90,7 +90,7 @@ $.fn.addtabs = function (options) {
             //创建新TAB的title
             title = $('<li role="presentation" id="tab_' + id + '"><a href="#' + id + '" node-id="' + opts.id + '" aria-controls="' + id + '" role="tab" data-toggle="tab">' + opts.title + '</a></li>');
             //是否允许关闭
-            if (options.close) {
+            if (options.close && $("li", navobj).size() > 0) {
                 title.append(' <i class="close-tab fa fa-remove"></i>');
             }
             //创建新TAB的内容
