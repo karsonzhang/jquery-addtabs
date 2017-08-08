@@ -29,7 +29,9 @@ $.fn.addtabs = function (options) {
         //浏览器前进后退事件
         $(window).on("popstate", function (e) {
             var state = e.originalEvent.state;
-            $("a[addtabs=" + state.id + "]", options.monitor).data("pushstate", true).trigger("click");
+            if (state) {
+                $("a[addtabs=" + state.id + "]", options.monitor).data("pushstate", true).trigger("click");
+            }
         });
     }
     $(options.monitor).on('click', '[addtabs]', function (e) {
