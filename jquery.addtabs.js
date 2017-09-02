@@ -82,21 +82,24 @@ $.fn.addtabs = function (options) {
     });
 
     _add = function (opts) {
-        id = 'tab_' + opts.id;
+        var id, tabid, conid, url;
+        id = opts.id;
+        tabid = 'tab_' + opts.id;
+        conid = 'con_' + opts.id;
         url = opts.url;
         url += (opts.url.indexOf("?") > -1 ? "&addtabs=1" : "?addtabs=1");
         navobj.find("[role='presentation']").removeClass('active');
         tabobj.find("[role='tabpanel']").removeClass('active');
         //如果TAB不存在，创建一个新的TAB
-        if ($("#" + id).size() == 0) {
+        if ($("#" + tabid).size() == 0) {
             //创建新TAB的title
-            title = $('<li role="presentation" id="tab_' + id + '"><a href="#' + id + '" node-id="' + opts.id + '" aria-controls="' + id + '" role="tab" data-toggle="tab">' + opts.title + '</a></li>');
+            title = $('<li role="presentation" id="' + tabid + '"><a href="#' + conid + '" node-id="' + opts.id + '" aria-controls="' + id + '" role="tab" data-toggle="tab">' + opts.title + '</a></li>');
             //是否允许关闭
             if (options.close && $("li", navobj).size() > 0) {
                 title.append(' <i class="close-tab fa fa-remove"></i>');
             }
             //创建新TAB的内容
-            content = $('<div role="tabpanel" class="tab-pane" id="' + id + '"></div>');
+            content = $('<div role="tabpanel" class="tab-pane" id="' + conid + '"></div>');
             //是否指定TAB内容
             if (opts.content) {
                 content.append(opts.content);
@@ -118,23 +121,25 @@ $.fn.addtabs = function (options) {
         }
 
         //激活TAB
-        $("#tab_" + id).addClass('active');
-        $("#" + id).addClass("active");
+        $("#" + tabid).addClass('active');
+        $("#" + conid).addClass("active");
         _drop();
     };
 
     _close = function (id) {
+        var tabid = 'tab_'+id;
+        var conid = 'con_'+id;
         //如果关闭的是当前激活的TAB，激活他的前一个TAB
-        if (obj.find("li.active").attr('id') == "tab_" + id) {
-            if ($("#tab_" + id).prev().not(".tabdrop").size() > 0) {
-                $("#tab_" + id).prev().not(".tabdrop").find("a").trigger("click");
-            } else if ($("#tab_" + id).next().size() > 0) {
-                $("#tab_" + id).next().trigger("click");
+        if (obj.find("li.active").attr('id') == tabid) {
+            if ($("#" + tabid).prev().not(".tabdrop").size() > 0) {
+                $("#" + tabid).prev().not(".tabdrop").find("a").trigger("click");
+            } else if ($("#" + tabid).next().size() > 0) {
+                $("#" + tabid).next().trigger("click");
             }
         }
         //关闭TAB
-        $("#tab_" + id).remove();
-        $("#" + id).remove();
+        $("#" + tabid).remove();
+        $("#" + conid).remove();
         _drop();
         options.callback();
     };
