@@ -107,14 +107,14 @@
             tabobj.find("[role='tabpanel']").removeClass('active');
 
             //如果TAB不存在，创建一个新的TAB
-            if (tabitem.size() === 0) {
+            if (tabitem.length === 0) {
                 //创建新TAB的title
                 tabitem = $('<li role="presentation" id="' + tabid + '"><a href="#' + conid + '" node-id="' + opts.id + '" aria-controls="' + id + '" role="tab" data-toggle="tab">' + opts.title + '</a></li>');
                 //是否允许关闭
-                if (options.close && $("li", navobj).size() > 0) {
+                if (options.close && $("li", navobj).length > 0) {
                     tabitem.append(' <i class="close-tab fa fa-remove"></i>');
                 }
-                if (conitem.size() === 0) {
+                if (conitem.length === 0) {
                     //创建新TAB的内容
                     conitem = $('<div role="tabpanel" class="tab-pane" id="' + conid + '"></div>');
                     //是否指定TAB内容
@@ -131,7 +131,7 @@
                     tabobj.append(conitem);
                 }
                 //加入TABS
-                if ($('.tabdrop li', navobj).size() > 0) {
+                if ($('.tabdrop li', navobj).length > 0) {
                     $('.tabdrop ul', navobj).append(tabitem);
                 } else {
                     navobj.append(tabitem);
@@ -145,7 +145,7 @@
                 } else if (options.iframeForceRefreshTable) {
                     try {
                         //检测iframe中是否存在刷新按钮
-                        if ($("#" + conid + " iframe").contents().find(".btn-refresh:not([data-force-refresh=false])").size() > 0) {
+                        if ($("#" + conid + " iframe").contents().find(".btn-refresh:not([data-force-refresh=false])").length > 0) {
                             $("#" + conid + " iframe")[0].contentWindow.$(".btn-refresh:not([data-force-refresh=false])").trigger("click");
                         }
                     } catch (e) {
@@ -169,9 +169,9 @@
             if (obj.find("li.active").not('.tabdrop').attr('id') === tabid) {
                 var prev = tabitem.prev().not(".tabdrop");
                 var next = tabitem.next().not(".tabdrop");
-                if (prev.size() > 0) {
+                if (prev.length > 0) {
                     prev.find('a').trigger("click");
-                } else if (next.size() > 0) {
+                } else if (next.length > 0) {
                     next.find('a').trigger("click");
                 } else {
                     $(">li:not(.tabdrop):last > a", navobj).trigger('click');
@@ -192,7 +192,7 @@
     $.fn.refreshAddtabs = function () {
         var navobj = $(this);
         var dropdown = $(".tabdrop", navobj);
-        if (dropdown.size() === 0) {
+        if (dropdown.length === 0) {
             dropdown = $('<li class="dropdown pull-right hide tabdrop"><a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">' +
                 '<i class="glyphicon glyphicon-align-justify"></i>' +
                 ' <b class="caret"></b></a><ul class="dropdown-menu"></ul></li>');
