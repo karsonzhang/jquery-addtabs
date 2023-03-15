@@ -15,6 +15,7 @@
             nav: '.nav-addtabs',
             tab: '.tab-addtabs',
             iframeUse: true, //使用iframe还是ajax
+            simple: false, //是否启用简洁模式，简洁模式下将不启用nav和tab
             iframeHeight: $(window).height() - 50, //固定TAB中IFRAME高度,根据需要自己修改
             iframeForceRefresh: false, //点击后强制加载对应的iframe
             iframeForceRefreshTable: false, //点击后强制刷新对应的iframe中的table
@@ -100,6 +101,11 @@
             url = opts.url;
             url += (opts.url.indexOf("?") > -1 ? "&addtabs=1" : "?addtabs=1");
 
+            if (options.simple) {
+                navobj.find("[role='presentation']").remove();
+                tabobj.find("[role='tabpanel']").remove();
+            }
+
             var tabitem = $('#' + tabid, navobj);
             var conitem = $('#' + conid, tabobj);
 
@@ -130,11 +136,13 @@
                     }
                     tabobj.append(conitem);
                 }
-                //加入TABS
-                if ($('.tabdrop li', navobj).length > 0) {
-                    $('.tabdrop ul', navobj).append(tabitem);
-                } else {
-                    navobj.append(tabitem);
+                if (!options.simple) {
+                    //加入TABS
+                    if ($('.tabdrop li', navobj).length > 0) {
+                        $('.tabdrop ul', navobj).append(tabitem);
+                    } else {
+                        navobj.append(tabitem);
+                    }
                 }
             } else {
                 //强制刷新iframe
