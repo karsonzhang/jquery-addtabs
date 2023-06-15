@@ -161,7 +161,7 @@
                     }
                 }
             }
-            localStorage.setItem("addtabs", $(this).prop('outerHTML'));
+            sessionStorage.setItem("addtabs", $(this).prop('outerHTML'));
             //激活TAB
             tabitem.addClass('active');
             conitem.addClass("active");
